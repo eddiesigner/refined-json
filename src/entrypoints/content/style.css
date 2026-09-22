@@ -6,6 +6,9 @@ body {
 
 .rj-root {
   min-height: 100vh;
+  /* Lets the `Canvas`/`CanvasText` system colors used in raw mode (see
+     App.vue) resolve against the OS's actual light/dark setting. */
+  color-scheme: light dark;
   background: var(--sh-background);
   color: var(--sh-foreground);
   font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;

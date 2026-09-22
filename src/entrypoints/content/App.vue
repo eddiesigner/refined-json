@@ -14,9 +14,17 @@ const props = defineProps<{
 const isRaw = ref(false);
 const { settings, update, palette } = useThemeSettings();
 
+// A plain browser tab showing raw JSON has no theme of its own — it just
+// renders with the browser's native light/dark UI colors, which follow the
+// OS setting live. `Canvas`/`CanvasText` are the CSS system-color keywords
+// for exactly that (paired with `color-scheme: light dark` below), so raw
+// mode matches the native view instead of a hardcoded white/black guess.
+const NATIVE_BACKGROUND = 'Canvas';
+const NATIVE_FOREGROUND = 'CanvasText';
+
 const themeVars = computed(() => ({
-  '--sh-background': palette.value.background,
-  '--sh-foreground': palette.value.foreground,
+  '--sh-background': isRaw.value ? NATIVE_BACKGROUND : palette.value.background,
+  '--sh-foreground': isRaw.value ? NATIVE_FOREGROUND : palette.value.foreground,
   '--sh-sign': palette.value.sign ?? palette.value.foreground,
   '--sh-property': palette.value.property ?? palette.value.foreground,
   '--sh-string': palette.value.string ?? palette.value.foreground,

@@ -21,8 +21,8 @@
   it takes over immediately, no click required.
 - **Collapsible tree** — click any `{` or `[` to collapse or expand that
   object or array.
-- **Raw view** — see the exact, unformatted response any time, still
-  syntax-highlighted, one click away.
+- **Raw view** — see the exact, unformatted response any time, exactly as
+  the server sent it, one click away.
 - **Light/dark themes** — pick a light theme and a dark theme that switch
   automatically with your system, or lock in one theme that's always used.
 - Works on Chrome/Chromium-based browsers, plus Firefox.
@@ -51,10 +51,13 @@ back.
 ### Raw view
 
 Bottom-center floating buttons switch between the pretty tree and the
-exact raw text the server sent, still highlighted for readability.
+exact raw text the server sent — no formatting, no highlighting, and no
+theme; it ignores your theme choice entirely and looks exactly like a
+plain browser tab, following your OS's light/dark setting the same way
+the browser's own raw view would if the extension weren't there.
 
 <p align="center">
-  <img src="docs/screenshots/raw.png" width="600" alt="The raw JSON view, syntax-highlighted but unformatted" />
+  <img src="docs/screenshots/raw.png" width="600" alt="The raw JSON view, shown exactly as a plain browser tab would, with no formatting, highlighting, or theme applied" />
 </p>
 
 ### Themes
@@ -82,6 +85,12 @@ or **Always use** one fixed theme regardless of system preference.
 
 See [DEVELOPMENT.md](DEVELOPMENT.md) for the project structure, local dev
 setup, and build/release steps.
+
+## Credits
+
+Theme colors (Taffy, Vercel, VS Code, One Dark Pro, and the rest of the
+picker) come from [Sugar High](https://sugar-high.vercel.app/)'s bundled
+themes.
 
 ## License
 

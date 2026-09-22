@@ -21,13 +21,20 @@ a Vue app takes over from there.
 
 The pretty view is a recursive tree (`JsonNode.vue`) that renders JSON
 values directly — not by reformatting and re-highlighting text — so
-collapsing/expanding is just component-local state, no re-parsing. The raw
-view instead highlights the untouched original text with
-[Sugar High](https://sugar-high.vercel.app/)'s headless `highlight()`.
-Both views are colored from the same theme: Sugar High's tokens reference
-CSS custom properties like `--sh-string`, and `App.vue` sets those same
-variables from the active palette, so the hand-rolled tree and the
-Sugar-High-rendered raw text always match.
+collapsing/expanding is just component-local state, no re-parsing. It's
+colored via CSS custom properties (`--sh-string`, `--sh-property`, ...) that
+`App.vue` sets from the active palette — palette data structurally adapted
+from [Sugar High](https://sugar-high.vercel.app/)'s bundled themes
+(`themes.ts`), though the extension no longer depends on Sugar High itself.
+The raw view (`RawView.vue`) renders the untouched original text with no
+highlighting or reformatting, and the theme is ignored too: `App.vue`
+overrides `--sh-background`/`--sh-foreground` to the `Canvas`/`CanvasText`
+CSS system colors whenever `isRaw` is true (paired with `color-scheme:
+light dark` in `style.css`), so it renders with the browser's own native
+light/dark colors — the same mechanism real browsers use for the raw view
+they'd show without this extension — rather than a hardcoded guess. It
+tracks the OS setting live and reverts to the active palette the moment you
+switch back to Pretty.
 
 **Known limitations** (see the README for the user-facing summary):
 
@@ -53,7 +60,7 @@ src/
       JsonTree.vue                Thin wrapper that kicks off the recursive tree
       JsonNode.vue                 Recursive collapsible object/array/primitive renderer
       KeyLabel.vue                 Shared `"key": ` prefix used by JsonNode
-      RawView.vue                 Raw JSON text, highlighted via Sugar High
+      RawView.vue                 Raw JSON text, unstyled, theme ignored
       Toolbar.vue                  Floating Pretty/Raw/Theme buttons
       ThemeMenu.vue                Theme mode (match system/fixed) + palette pickers
       useThemeSettings.ts          Active palette, derived from settings + system color scheme
@@ -113,8 +120,9 @@ For Firefox, see the [Firefox](#firefox) section below.
   collapsible, syntax-highlighted tree automatically.
 - Click a few `{`/`[` rows — they should collapse to a summary and expand
   back.
-- Click **Raw** — it should show the exact, unformatted original text,
-  still highlighted. Click **Pretty** to go back.
+- Click **Raw** — it should show the exact, unformatted original text as a
+  plain white/black page, ignoring whatever theme is active. Click
+  **Pretty** to go back — the theme should reappear.
 - Click **Theme**, switch between **Match system** and **Always use**, and
   change the light/dark or fixed palette — the page should recolor
   immediately.
