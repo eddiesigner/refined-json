@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { DARK_PALETTE_OPTIONS, LIGHT_PALETTE_OPTIONS, PALETTE_OPTIONS } from './themes';
+import type { OpenTabMessage } from './messages';
 import type { ThemeSettings } from './settings';
 
 defineProps<{ settings: ThemeSettings }>();
 const emit = defineEmits<{ change: [patch: Partial<ThemeSettings>] }>();
 
+const SUPPORT_URL = 'https://ko-fi.com/eddiesigner';
+
 function selectValue(event: Event): string {
   return (event.target as HTMLSelectElement).value;
+}
+
+// Some raw-JSON hosts send a CSP that blocks a page's own script-initiated
+// new-tab links (see the background script). Routing the click there avoids
+// that, while `href`/`target` stay for hover preview, right-click, and a11y.
+function openSupportLink(event: MouseEvent) {
+  event.preventDefault();
+  browser.runtime.sendMessage({ type: 'open-tab', url: SUPPORT_URL } satisfies OpenTabMessage);
 }
 </script>
 
@@ -57,5 +68,10 @@ function selectValue(event: Event): string {
         </option>
       </select>
     </label>
+
+    <hr class="rj-menu-divider" />
+    <a class="rj-support" :href="SUPPORT_URL" target="_blank" rel="noopener noreferrer" @click="openSupportLink">
+      ☕ Buy me a coffee
+    </a>
   </div>
 </template>

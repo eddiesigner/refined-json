@@ -54,6 +54,7 @@ generates the right manifest per browser target from one codebase.
 wxt.config.ts                 Manifest fields, srcDir/outDir (name, permissions, ...)
 src/
   entrypoints/
+    background.ts              Opens external links via `chrome.tabs.create` (see below)
     content/
       index.ts                  Entry point: detects JSON docs, recovers raw text, mounts the Vue app
       App.vue                    Root component: raw/pretty toggle, theme CSS variables
@@ -62,15 +63,16 @@ src/
       KeyLabel.vue                 Shared `"key": ` prefix used by JsonNode
       RawView.vue                 Raw JSON text, unstyled, theme ignored
       Toolbar.vue                  Floating Pretty/Raw/Theme buttons
-      ThemeMenu.vue                Theme mode (match system/fixed) + palette pickers
+      ThemeMenu.vue                Theme mode (match system/fixed) + palette pickers + support link
       useThemeSettings.ts          Active palette, derived from settings + system color scheme
       useSystemScheme.ts           Tracks `prefers-color-scheme`
       themes.ts                   Palette catalog (data adapted from Sugar High's bundled themes)
       settings.ts                 Settings type + typed storage item (wxt/storage)
       detect.ts                    JSON detection + raw-text recovery
       jsonValue.ts                 Shared `JsonValue` type
+      messages.ts                  Content↔background message types
       style.css                   All UI styles
-public/icon/                  Toolbar icon (16/32/48/96/128px), copied as-is into every build (not
+public/icon/                  Toolbar icon (16/32/48/128px), copied as-is into every build (not
                                under src/ — WXT resolves publicDir from the project root by default)
 docs/screenshots/            README screenshots
 ```
@@ -79,6 +81,18 @@ Theme choices persist via `wxt/storage`, which fires its `.watch()`
 callback in every open tab whenever the value changes, regardless of which
 tab changed it — so switching themes in one JSON tab updates every other
 open one live.
+
+The Theme popover's support link goes through `background.ts` via
+`browser.runtime.sendMessage` rather than a plain `<a target="_blank">`
+click. Some raw-JSON hosts (GitHub raw among them) send a `Content-Security-
+Policy: ... sandbox` header with no `allow-popups`, which blocks a page's
+own script-initiated new-tab/window opening outright — a restriction that
+applies to the browsing context itself, regardless of what put the click
+handler there. The background service worker isn't part of that browsing
+context, so `chrome.tabs.create()` from there is unaffected; the anchor
+still keeps its real `href`/`target` for hover preview, right-click, and
+screen readers, with only the primary click routed through the background
+script.
 
 ## Local development
 

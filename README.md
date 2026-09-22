@@ -92,6 +92,10 @@ Theme colors (Taffy, Vercel, VS Code, One Dark Pro, and the rest of the
 picker) come from [Sugar High](https://sugar-high.vercel.app/)'s bundled
 themes.
 
+## Support
+
+If Refined JSON's useful to you, you can [buy me a coffee](https://ko-fi.com/eddiesigner).
+
 ## License
 
 [MIT](LICENSE)
