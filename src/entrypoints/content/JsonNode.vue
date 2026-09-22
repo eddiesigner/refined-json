@@ -53,8 +53,8 @@ const collapsed = ref(false);
   </div>
 
   <div v-else-if="isContainer" class="rj-node">
-    <button type="button" class="rj-row rj-toggle" @click="collapsed = !collapsed">
-      <span class="rj-chevron" :class="{ 'rj-chevron--collapsed': collapsed }">▾</span>
+    <button type="button" class="rj-row rj-toggle" :aria-expanded="!collapsed" @click="collapsed = !collapsed">
+      <span class="rj-chevron" :class="{ 'rj-chevron--collapsed': collapsed }" aria-hidden="true">▾</span>
       <KeyLabel :key-label="keyLabel" />
       <span class="rj-punct">{{ openBrace }}</span>
       <template v-if="collapsed">

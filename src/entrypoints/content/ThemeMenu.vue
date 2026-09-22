@@ -16,6 +16,7 @@ function selectValue(event: Event): string {
       <button
         type="button"
         :class="['rj-segment', { 'rj-segment--active': settings.mode === 'auto' }]"
+        :aria-pressed="settings.mode === 'auto'"
         @click="emit('change', { mode: 'auto' })"
       >
         Match system
@@ -23,6 +24,7 @@ function selectValue(event: Event): string {
       <button
         type="button"
         :class="['rj-segment', { 'rj-segment--active': settings.mode === 'fixed' }]"
+        :aria-pressed="settings.mode === 'fixed'"
         @click="emit('change', { mode: 'fixed' })"
       >
         Always use

@@ -24,6 +24,13 @@ export default defineContentScript({
       return;
     }
 
+    if (!document.documentElement.lang) {
+      document.documentElement.lang = 'en';
+    }
+    if (!document.title) {
+      document.title = location.pathname.split('/').filter(Boolean).pop() || location.hostname;
+    }
+
     document.body.replaceChildren();
     const container = document.createElement('div');
     document.body.appendChild(container);

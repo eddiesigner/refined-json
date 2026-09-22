@@ -43,6 +43,13 @@ body {
   background: color-mix(in srgb, var(--sh-foreground) 8%, transparent);
 }
 
+.rj-toggle:focus-visible,
+.rj-fab:focus-visible,
+.rj-segment:focus-visible {
+  outline: 2px solid var(--sh-property, var(--sh-foreground, currentColor));
+  outline-offset: 2px;
+}
+
 .rj-chevron {
   display: inline-block;
   width: 1em;
